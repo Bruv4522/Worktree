@@ -5,13 +5,32 @@ import com.example.Worktree.Token.TokenRepo;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepo repo;
     private final TokenRepo token;
+
+    public List<User> findAll() {
+        return repo.findAll();
+    }
+
+    public Optional<User> findById(long id) {
+        return repo.findById(id);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return repo.findByUsername(username);
+    }
+
+    public Optional<User> findByToken(String token) {
+        return repo.findByToken(UUID.fromString(token));
+    }
 
     public boolean signup(User user) {
         try {
@@ -28,7 +47,7 @@ public class UserService {
             return false;
         }
 
-        User foundUser = repo.findByUsername(user.getUsername());
+        User foundUser = repo.findByUsername(user.getUsername()).orElseThrow();
 
         if (BCrypt.checkpw(user.getPassword(), foundUser.getPassword())) {
             if (!token.existsByUser(foundUser)) {
@@ -45,7 +64,7 @@ public class UserService {
         Optional<Token> foundToken = token.findByUserUsername(user.getUsername());
 
         if (foundToken.isPresent()) {
-            User foundUser = repo.findByUsername(user.getUsername());
+            User foundUser = repo.findByUsername(user.getUsername()).orElseThrow();
 
             if (BCrypt.checkpw(user.getPassword(), foundUser.getPassword())) {
                 user.setToken(null);
