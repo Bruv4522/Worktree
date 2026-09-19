@@ -1,10 +1,14 @@
 package com.example.Worktree.User;
 
+import com.example.Worktree.Project.Project;
 import com.example.Worktree.Token.Token;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +26,9 @@ public class User {
     @OneToOne
     @JoinColumn(name = "token")
     private Token token;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
