@@ -2,6 +2,7 @@ package com.example.Worktree.User;
 
 import com.example.Worktree.Project.Project;
 import com.example.Worktree.Token.Token;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class User {
     private Token token;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Project> projects = new ArrayList<>();
 
     public User(String username, String password) {

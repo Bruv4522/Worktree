@@ -33,4 +33,25 @@ public class ProjectController {
 
         return service.findByUserId(foundUser.get().getId());
     }
+
+    @PostMapping("/create")
+    public Text createProject(@RequestHeader("Authorization") String token, @RequestBody Project project) {
+        Optional<User> foundUser;
+
+        try {
+            foundUser = users.findByToken(token);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!foundUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        if (service.create(project, foundUser.get())) {
+            return new Text("Project created successfully");
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

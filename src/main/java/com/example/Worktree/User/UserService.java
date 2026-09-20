@@ -2,6 +2,7 @@ package com.example.Worktree.User;
 
 import com.example.Worktree.Token.Token;
 import com.example.Worktree.Token.TokenRepo;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class UserService {
         return repo.findByTokenId(UUID.fromString(token));
     }
 
+    @Transactional
     public boolean signup(User user) {
         try {
             repo.save(new User(user.getUsername(), BCrypt.hashpw(user.getPassword(), BCrypt.gensalt())));
@@ -41,6 +43,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public boolean login(User user) {
         if (!repo.existsByUsername(user.getUsername())) {
             return false;
@@ -59,6 +62,7 @@ public class UserService {
         return false;
     }
 
+    @Transactional
     public boolean logout(User user) {
         Optional<Token> foundToken = token.findByUserUsername(user.getUsername());
 
@@ -66,7 +70,7 @@ public class UserService {
             User foundUser = repo.findByUsername(user.getUsername()).orElseThrow();
 
             if (BCrypt.checkpw(user.getPassword(), foundUser.getPassword())) {
-                user.setToken(null);
+                foundUser.setToken(null);
                 token.delete(foundToken.get());
                 return true;
             }

@@ -1,5 +1,6 @@
 package com.example.Worktree.Project;
 
+import com.example.Worktree.User.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,9 @@ public class ProjectService {
         return repo.findByUserId(userId);
     }
 
-    public boolean create(Project project) {
+    public boolean create(Project project, User user) {
         try {
+            project.setUser(user);
             repo.save(project);
             return true;
         } catch (Exception e) {

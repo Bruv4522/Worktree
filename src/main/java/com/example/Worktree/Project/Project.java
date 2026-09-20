@@ -1,6 +1,7 @@
 package com.example.Worktree.Project;
 
 import com.example.Worktree.User.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,18 +30,17 @@ public class Project {
     private String description;
 
     @NotNull
-    @NotBlank
     @Column(nullable = false)
     private URI repo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
-    public Project(String name, String description, String repo, User user) {
+    public Project(String name, String description, String repo) {
         this.name = name;
         this.description = description;
         this.repo = URI.create(repo);
-        this.user = user;
     }
 }
