@@ -18,7 +18,12 @@ public class ProjectController {
     private UserService users;
 
     @GetMapping
-    public List<Project> findAll(@RequestHeader("Authorization") String token) {
+    public List<Project> findAll() {
+        return service.findByAired();
+    }
+
+    @GetMapping("/me")
+    public List<Project> findMine(@RequestHeader("Authorization") String token) {
         Optional<User> foundUser;
 
         try {

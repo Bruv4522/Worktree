@@ -16,6 +16,10 @@ public class ProjectService {
         return repo.findAll();
     }
 
+    public List<Project> findByAired() {
+        return repo.findByAiredTrue();
+    }
+
     public Optional<Project> findById(long id) {
         return repo.findById(id);
     }

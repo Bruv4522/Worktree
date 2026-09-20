@@ -38,9 +38,18 @@ public class Project {
     @JsonBackReference
     private User user;
 
+    private boolean aired = true;
+
     public Project(String name, String description, String repo) {
         this.name = name;
         this.description = description;
         this.repo = URI.create(repo);
+    }
+
+    public Project(String name, String description, String repo, boolean aired) {
+        this.name = name;
+        this.description = description;
+        this.repo = URI.create(repo);
+        this.aired = aired;
     }
 }
