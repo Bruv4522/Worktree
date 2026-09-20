@@ -5,7 +5,6 @@ import com.example.Worktree.Token.TokenRepo;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,7 +28,7 @@ public class UserService {
     }
 
     public Optional<User> findByToken(String token) {
-        return repo.findByToken(UUID.fromString(token));
+        return repo.findByTokenId(UUID.fromString(token));
     }
 
     public boolean signup(User user) {
