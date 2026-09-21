@@ -5,7 +5,10 @@ import com.example.Worktree.Token.TokenRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -77,5 +80,21 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public Optional<User> verify(String token) {
+        Optional<User> foundUser;
+
+        try {
+            foundUser = repo.findByTokenId(UUID.fromString(token));
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!foundUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        return foundUser;
     }
 }
