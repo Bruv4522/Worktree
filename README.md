@@ -1,3 +1,5 @@
+Note: This is the backend repository. Frontend is at https://github.com/Bruv4522/Worktree-frontend
+
 This is Worktree. Built with Java 25, Spring Boot, TypeScript, and React.js, Worktree is platform for managing and collaborating on programming projects. Although currently in development, when complete, Worktree will have the following features:
 
 1. Users who can own multiple projects and allow other users to become members in their projects - Pending
